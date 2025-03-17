@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Earnings</title>
+</head>
+
+<style>
+    /* Moving gradient background */
+@keyframes moveBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #ff416c, #ff4b2b, #1e90ff, #00c9ff);
+    background-size: 300% 300%;
+    animation: moveBackground 8s infinite linear;
+    margin: 0;
+}
+
+/* Centered container */
+.edit-container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+    position: relative;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Heading */
+h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Input field */
+input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ff416c;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+input:focus {
+    border-color: #1e90ff;
+    box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
+}
+
+/* Save button */
+button {
+    background: #ff416c;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Button hover effect */
+button:hover {
+    background: #e0365d;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255, 65, 108, 0.3);
+}
+
+/* Animated button effect */
+button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease-out, height 0.4s ease-out;
+}
+
+button:active::before {
+    width: 250px;
+    height: 250px;
+}
+
+/* Back to Dashboard link */
+a {
+    display: block;
+    margin-top: 15px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #1e90ff;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #ff416c;
+    text-decoration: underline;
+}
+
+</style>
+
+<body>
+    <div class="edit-container">
+        <h2>Edit Earnings</h2>
+        <label for="dailyEarning">Today's Earning ($):</label>
+        <input type="number" id="dailyEarning" value="0">
+        <button onclick="updateEarnings()">Save</button>
+        <a href="index.html">Back to Dashboard</a>
+    </div>
+    <script>
+        function updateEarnings() {
+            let dailyEarning = parseInt(document.getElementById('dailyEarning').value) || 0;
+
+            // Get previous earnings
+            let monthEarning = parseInt(localStorage.getItem('monthEarning')) || 0;
+            let totalEarning = parseInt(localStorage.getItem('totalEarning')) || 0;
+
+            // Update earnings
+            localStorage.setItem('dailyEarning', dailyEarning);
+            localStorage.setItem('monthEarning', monthEarning + dailyEarning);
+            localStorage.setItem('totalEarning', totalEarning + dailyEarning);
+
+            // Redirect to Dashboard
+            window.location.href = "main.html";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .dashboard {
+            width: 90%;
+            max-width: 1200px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .icons {
+            display: flex;
+            align-items: center;
+        }
+        .icons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 15px;
+        }
+        .icons .logout {
+            color: #ff4757;
+            font-weight: bold;
+        }
+        .earnings {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+        .earnings div {
+            flex: 1;
+            min-width: 250px;
+            padding: 25px;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        .today {
+            background: #ff4757;
+        }
+        .month {
+            background: #1e90ff;
+        }
+        .total {
+            background: #2ed573;
+        }
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 40px;
+        }
+        .buttons button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+            width: 45%;
+        }
+        .pending {
+            background: #ff9f1a;
+            color: white;
+        }
+        .pending:hover {
+            background: #e68a00;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <div class="profile">
+                <img src="pp.jpg" alt="Profile Picture">
+                <span class="username">beingadot</span>
+            </div>
+            <div class="icons">
+                <button class="notification">🔔</button>
+                <button class="logout">Logout</button>
+            </div>
+        </div>
+        <h2 style="color: #333;">Earnings Dashboard</h2>
+        <div class="earnings">
+            <div class="today">Today's Earning<br>$<span id="todayEarning">0</span></div>
+            <div class="month">This Month<br>$<span id="monthEarning">0</span></div>
+            <div class="total">Total Earning<br>$<span id="totalEarning">0</span></div>
+        </div>
+        <div class="chart-container">
+            <canvas id="earningsChart"></canvas>
+        </div>
+        <div class="buttons">
+            <button class="pending" onclick="window.location.href='edit.html'">Track Earnings</button>
+        </div>
+    </div>
+
+    <script>
+        if (!localStorage.getItem('totalEarning')) {
+    localStorage.setItem('totalEarning', 0);
+}
+
+function updateDashboard() {
+    let dailyEarning = parseInt(localStorage.getItem('dailyEarning')) || 0;
+    let monthEarning = parseInt(localStorage.getItem('monthEarning')) || 0;
+    let totalEarning = parseInt(localStorage.getItem('totalEarning')) || 0;
+
+    document.getElementById('todayEarning').innerText = dailyEarning;
+    document.getElementById('monthEarning').innerText = monthEarning;
+    document.getElementById('totalEarning').innerText = totalEarning;
+
+    updateChart(dailyEarning);
+}
+
+function updateChart(newValue) {
+    let newData = earningsChart.data.datasets[0].data;
+    newData.shift();
+    newData.push(newValue);
+    earningsChart.update();
+}
+
+var ctx = document.getElementById('earningsChart').getContext('2d');
+var earningsChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['4 days ago', '3 days ago', '2 days ago', 'Yesterday', 'Today'],
+        datasets: [{
+            label: 'Earnings ($)',
+            data: [45, 72, 82, 53, parseInt(localStorage.getItem('dailyEarning')) || 3120],
+            backgroundColor: 'rgba(30, 144, 255, 0.2)',
+            borderColor: '#1e90ff',
+            borderWidth: 2,
+            pointBackgroundColor: '#ff4757',
+            pointRadius: 6,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+updateDashboard();
+
+    </script>
+</body>
+</html>
