@@ -13,18 +13,19 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
         .dashboard {
             width: 90%;
-            max-width: 1200px;
+            max-width: 800px;
             background: white;
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
+            margin-bottom: 20px;
         }
         .header {
             display: flex;
@@ -109,6 +110,47 @@
             font-size: 1.5rem;
             font-weight: 600;
         }
+        .dashboard2 {
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .name-list-container {
+            height: 400px;
+            overflow: hidden;
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .name-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.5s ease-in-out;
+        }
+        .name-item {
+            padding: 10px;
+            border-radius: 8px;
+            background: #f1f3f5;
+            transition: background 0.3s ease;
+        }
+        .name-item.highlight {
+            font-size: 1.5rem;
+            background: #efefff;
+            animation: highlight 1.5s ease;
+        }
+        @keyframes highlight {
+            0% { background: #ffe066; }
+            100% { background: #ff0000; }
+        }
     </style>
 </head>
 <body>
@@ -125,9 +167,9 @@
         </div>
         <h2 style="color: #333;">Earnings Dashboard</h2>
         <div class="earnings">
-            <div class="today">Today's Earning<br>$<span id="todayEarning">0</span></div>
-            <div class="month">This Month<br>$<span id="monthEarning">0</span></div>
-            <div class="total">Total Earning<br>$<span id="totalEarning">0</span></div>
+            <div class="today">Today's Earning<br>₹<span id="todayEarning">0</span></div>
+            <div class="month">This Month<br>₹<span id="monthEarning">0</span></div>
+            <div class="total">Total Earning<br>₹<span id="totalEarning">0</span></div>
         </div>
         <div class="chart-container">
             <canvas id="earningsChart"></canvas>
@@ -137,59 +179,109 @@
         </div>
     </div>
 
+    <div class="dashboard2">
+        <h1 style="color: #8d00ce;">NEW ORDERS</h1>
+        <div class="name-list-container">
+            <div class="name-list" id="nameList"></div>
+        </div>
+    </div>
+
     <script>
         if (!localStorage.getItem('totalEarning')) {
-    localStorage.setItem('totalEarning', 0);
-}
-
-function updateDashboard() {
-    let dailyEarning = parseInt(localStorage.getItem('dailyEarning')) || 0;
-    let monthEarning = parseInt(localStorage.getItem('monthEarning')) || 0;
-    let totalEarning = parseInt(localStorage.getItem('totalEarning')) || 0;
-
-    document.getElementById('todayEarning').innerText = dailyEarning;
-    document.getElementById('monthEarning').innerText = monthEarning;
-    document.getElementById('totalEarning').innerText = totalEarning;
-
-    updateChart(dailyEarning);
-}
-
-function updateChart(newValue) {
-    let newData = earningsChart.data.datasets[0].data;
-    newData.shift();
-    newData.push(newValue);
-    earningsChart.update();
-}
-
-var ctx = document.getElementById('earningsChart').getContext('2d');
-var earningsChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['4 days ago', '3 days ago', '2 days ago', 'Yesterday', 'Today'],
-        datasets: [{
-            label: 'Earnings ($)',
-            data: [45, 72, 82, 53, parseInt(localStorage.getItem('dailyEarning')) || 3120],
-            backgroundColor: 'rgba(30, 144, 255, 0.2)',
-            borderColor: '#1e90ff',
-            borderWidth: 2,
-            pointBackgroundColor: '#ff4757',
-            pointRadius: 6,
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
+            localStorage.setItem('totalEarning', 0);
         }
-    }
-});
 
-updateDashboard();
+        function updateDashboard() {
+            let dailyEarning = parseInt(localStorage.getItem('dailyEarning')) || 0;
+            let monthEarning = parseInt(localStorage.getItem('monthEarning')) || 0;
+            let totalEarning = parseInt(localStorage.getItem('totalEarning')) || 0;
 
+            document.getElementById('todayEarning').innerText = dailyEarning;
+            document.getElementById('monthEarning').innerText = monthEarning;
+            document.getElementById('totalEarning').innerText = totalEarning;
+
+            updateChart(dailyEarning);
+        }
+
+        function updateChart(newValue) {
+            let newData = earningsChart.data.datasets[0].data;
+            newData.shift();
+            newData.push(newValue);
+            earningsChart.update();
+        }
+
+        var ctx = document.getElementById('earningsChart').getContext('2d');
+        var earningsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['4 days ago', '3 days ago', '2 days ago', 'Yesterday', 'Today'],
+                datasets: [{
+                    label: 'Earnings (₹)',
+                    data: [2854, 6798, 2489, 3480, parseInt(localStorage.getItem('dailyEarning')) || 3120],
+                    backgroundColor: 'rgba(30, 144, 255, 0.2)',
+                    borderColor: '#1e90ff',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#ff4757',
+                    pointRadius: 6,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        updateDashboard();
+
+        const names = [
+            "Katrina Kaif", "Amit Shah", "Cristiano Ronaldo", "Akshay Kumar", "Shah Rukh Khan",
+            "Narendra Modi", "Virat Kohli", "Lionel Messi", "Arvind Kejriwal", "Selena Gomez",
+            "Deepika Padukone", "Kylie Jenner", "Ranveer Singh", "Mamata Banerjee", "Rahul Gandhi",
+            "Anushka Sharma", "Donald Trump", "Hrithik Roshan", "Alia Bhatt", "Rajinikanth",
+            "Pawan Kalyan", "Gigi Hadid", "Kim Jong Un", "Kareena Kapoor Khan", "Joe Biden",
+            "Yogi Adityanath", "Justin Bieber", "Dwayne 'The Rock' Johnson", "Sushant Singh Rajput", "Beyoncé",
+            "Nayanthara", "Sachin Tendulkar", "Miley Cyrus", "Khloé Kardashian", "Amitabh Bachchan",
+            "Sonu Nigam", "Rohit Sharma", "Jennifer Lopez", "Uddhav Thackeray", "Vicky Kaushal",
+            "Rajkummar Rao", "Taapsee Pannu", "Neha Kakkar", "Taylor Swift", "Nora Fatehi",
+            "Zendaya", "Justin Timberlake", "John Abraham", "Allu Arjun", "Saina Nehwal",
+            "Sonam Kapoor", "Vijay", "Yuvraj Singh", "Hardik Pandya", "Sonia Gandhi",
+            "Jacqueline Fernandez", "Badshah", "Katy Perry", "Mahendra Singh Dhoni", "Ranbir Kapoor"
+        ];
+
+        function getRandomPrice() {
+            return Math.floor(Math.random() * 7) + 3; // Generates a random number between 3 and 9
+        }
+
+        let currentIndex = 0;
+        function updateNames() {
+            const nameList = document.getElementById('nameList');
+            let nameItem = document.createElement("div");
+            nameItem.className = "name-item highlight";
+            let randomPrice = getRandomPrice();
+            nameItem.textContent = `${names[currentIndex]} just ordered ${randomPrice} frames through Instagram`;
+            nameList.prepend(nameItem);
+
+            // Remove the last item if the list exceeds 10 items
+            if (nameList.children.length > 10) {
+                nameList.removeChild(nameList.lastChild);
+            }
+
+            // Scroll down effect
+            nameList.style.transform = "translateY(-10%)";
+            setTimeout(() => {
+                nameList.style.transition = "none";
+                nameList.style.transform = "translateY(0)";
+            }, 500);
+
+            currentIndex = (currentIndex + 1) % names.length;
+        }
+        setInterval(updateNames, 1000); // Update every 1 second
     </script>
 </body>
 </html>
