@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #121212;
             text-align: center;
             margin: 0;
             padding: 0;
@@ -20,12 +20,13 @@
         .dashboard {
             width: 90%;
             max-width: 800px;
-            background: white;
+            background: black;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
             position: relative;
             margin-bottom: 20px;
+            border: 2px solid gold;
         }
         .header {
             display: flex;
@@ -42,6 +43,7 @@
             height: 50px;
             border-radius: 50%;
             margin-right: 10px;
+            border: 2px solid gold;
         }
         .icons {
             display: flex;
@@ -53,6 +55,7 @@
             cursor: pointer;
             font-size: 18px;
             margin-left: 15px;
+            color: gold;
         }
         .icons .logout {
             color: #ff4757;
@@ -72,17 +75,10 @@
             border-radius: 12px;
             font-size: 20px;
             font-weight: bold;
-            color: white;
+            color: black;
             text-align: center;
-        }
-        .today {
-            background: #ff4757;
-        }
-        .month {
-            background: #1e90ff;
-        }
-        .total {
-            background: #2ed573;
+            background: gold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6);
         }
         .chart-container {
             width: 100%;
@@ -98,17 +94,17 @@
             font-weight: bold;
             transition: 0.3s;
             width: 45%;
+            background: gold;
+            color: black;
+            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.6);
         }
-        .pending {
-            background: #ff9f1a;
-            color: white;
-        }
-        .pending:hover {
-            background: #e68a00;
+        .buttons button:hover {
+            background: #d4af37;
         }
         .username {
             font-size: 1.5rem;
             font-weight: 600;
+            color: gold;
         }
         .dashboard2 {
             width: 90%;
